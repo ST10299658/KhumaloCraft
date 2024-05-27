@@ -1,0 +1,56 @@
+﻿@model IEnumerable<KhumaloCraft.Models.Transaction>
+
+@{
+    ViewData["Title"] = "Index";
+    var username = ViewBag.Username; // Retrieve username from ViewBag
+    var itemsForUser = Model.Where(item => item.Username == username);
+}
+
+<h1 class="text-center">Transaction List</h1>
+
+<div class="text-center mb-3">
+   
+    <a asp-action="Index" asp-controller="MyWork" class="btn btn-secondary">Go Back to Product Page</a>
+</div>
+
+<table class="table table-bordered mx-auto">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Availability</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Product ID</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in itemsForUser)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Username)</td>
+                <td>@Html.DisplayFor(modelItem => item.Availability)</td>
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <img src="@item.ImageUrl" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
+                    }
+                    else
+                    {
+                        <span>No Image</span>
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.ProductName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                <td>@Html.DisplayFor(modelItem => item.Product.ProductId)</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.TransactionId" class="btn btn-info">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.TransactionId" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
